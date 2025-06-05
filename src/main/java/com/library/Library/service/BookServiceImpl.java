@@ -6,23 +6,14 @@ import com.library.Library.entity.BookEntity;
 import com.library.Library.mapper.BookMapper;
 import com.library.Library.repository.BookRepository;
 import com.library.Library.repository.UserRepository;
-import com.library.Library.security.JwtTokenUtils;
 import com.library.Library.service.api.BookService;
-import com.library.Library.service.api.UserService;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
 import org.springframework.security.access.AccessDeniedException;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.HttpRequestHandler;
 
-import java.security.Principal;
 import java.util.List;
 
 
@@ -38,8 +29,6 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public List<BookResponse> getBooksAll() {
-
-
         userRepository.findByUsername(userContextService.getCurrentUserDetails())
                 .orElseThrow(() ->
                         new EntityNotFoundException("Нет такого пользователя "));
@@ -80,8 +69,7 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public String removeBook(Integer id) {
-
-        BookEntity book = bookRepository.findById(id)
+        BookEntity book = bookRepository.findByIdAndUsername(id,userContextService.getCurrentUserDetails())
                 .orElseThrow(() -> new EntityNotFoundException("Книга не найдена"));
         bookRepository.delete(book);
         return "Книга: " + book + " удалена";
@@ -96,6 +84,7 @@ public class BookServiceImpl implements BookService {
         if (!book.getUsername().equals(userContextService.getCurrentUserDetails())) {
             throw new AccessDeniedException("Пользователь не владеет этой книгой");
         }
+
         book.setName(bookRequest.getName());
         book.setAuthor(bookRequest.getAuthor());
         book.setGenre(bookRequest.getGenre());

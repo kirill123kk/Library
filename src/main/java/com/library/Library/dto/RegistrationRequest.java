@@ -2,10 +2,12 @@ package com.library.Library.dto;
 
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 
 
 @Data
+@AllArgsConstructor
 @Schema(description = "DTO запроса для регистрации нового пользователя")
 public class RegistrationRequest {
     @Schema(description = "Имя пользователя", example = "john_doe")

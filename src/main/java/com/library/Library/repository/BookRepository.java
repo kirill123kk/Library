@@ -9,6 +9,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface BookRepository  extends JpaRepository<BookEntity,Integer> {
@@ -19,5 +20,7 @@ public interface BookRepository  extends JpaRepository<BookEntity,Integer> {
     List<BookEntity> findByAuthor(String author);
 
     List<BookEntity> findAllByName(String name);
+
+    Optional<BookEntity> findByIdAndUsername(Integer id, String username);
 
 }
