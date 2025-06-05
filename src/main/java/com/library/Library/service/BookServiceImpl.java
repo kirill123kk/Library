@@ -69,7 +69,7 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public String removeBook(Integer id) {
-        BookEntity book = bookRepository.findByIdAndUsername(id,userContextService.getCurrentUserDetails())
+        BookEntity book = bookRepository.findByBookIdAndUsername(id,userContextService.getCurrentUserDetails())
                 .orElseThrow(() -> new EntityNotFoundException("Книга не найдена"));
         bookRepository.delete(book);
         return "Книга: " + book + " удалена";

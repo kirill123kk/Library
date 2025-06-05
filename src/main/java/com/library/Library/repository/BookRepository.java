@@ -21,6 +21,6 @@ public interface BookRepository  extends JpaRepository<BookEntity,Integer> {
 
     List<BookEntity> findAllByName(String name);
 
-    Optional<BookEntity> findByIdAndUsername(Integer id, String username);
+    Optional<BookEntity> findByBookIdAndUsername (Integer id, String username);
 
 }
